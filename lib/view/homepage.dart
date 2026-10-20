@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_diary/widget/back_view.dart';
+import 'package:flutter_diary/widget/front_view.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -8,6 +10,7 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  bool isFront = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,71 +45,21 @@ class _HomepageState extends State<Homepage> {
             const SizedBox(height: 30),
             Expanded(
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
-                child: PageView(
-                  controller: PageController(initialPage: 0, viewportFraction: 0.75),
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: PageView.builder(
+                  controller: PageController(initialPage: 0, viewportFraction: 0.8),
                   scrollDirection: Axis.horizontal,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.cyan,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: const [
-                          BoxShadow(color: Colors.black26, blurRadius: 8.0),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(28.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              '1',
-                              textScaler: TextScaler.linear(3),
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            const Text(
-                              'JAN',
-                              textScaler: TextScaler.linear(2.5),
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            const Spacer(),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      const Text(
-                                        '6/31',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      const SizedBox(height: 3),
-                                      Container(
-                                        width: double.infinity,
-                                        height: 3,
-                                        color: Colors.white30,
-                                        child: FractionallySizedBox(
-                                          alignment: Alignment.centerLeft,
-                                          widthFactor: 6 / 31,
-                                          child: Container(color: Colors.white),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const Icon(
-                                  Icons.more_vert_rounded,
-                                  color: Colors.white,
-                                  size: 30,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+                  itemCount: 12,
+                  itemBuilder: (_, i) => Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: isFront ? Colors.cyan : Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 8)],
                     ),
-                  ],
+                    child: isFront ? FrontView(monthIndex: i) : BackView(monthIndex: i),
+                  ),
                 ),
               ),
             ),
@@ -161,14 +114,24 @@ class _HomepageState extends State<Homepage> {
                     child: const Icon(Icons.mode_edit_outlined, color: Colors.white),
                   ),
                   const SizedBox(width: 10),
-                  Container(
-                    width: 50.0,
-                    height: 50.0,
-                    decoration: const BoxDecoration(
-                      color: Colors.black87,
-                      shape: BoxShape.circle,
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isFront = !isFront;
+                      });
+                    },
+                    child: Container(
+                      width: 50.0,
+                      height: 50.0,
+                      decoration: const BoxDecoration(
+                        color: Colors.black87,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.calendar_month_rounded,
+                        color: Colors.white,
+                      ),
                     ),
-                    child: const Icon(Icons.calendar_month_rounded, color: Colors.white),
                   ),
                 ],
               ),
