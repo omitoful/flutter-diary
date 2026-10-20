@@ -9,8 +9,25 @@ class Homepage extends StatefulWidget {
   State<Homepage> createState() => _HomepageState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   bool isFront = true;
+  late AnimationController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,15 +67,41 @@ class _HomepageState extends State<Homepage> {
                   controller: PageController(initialPage: 0, viewportFraction: 0.8),
                   scrollDirection: Axis.horizontal,
                   itemCount: 12,
-                  itemBuilder: (_, i) => Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: isFront ? Colors.cyan : Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 8)],
-                    ),
-                    child: isFront ? FrontView(monthIndex: i) : BackView(monthIndex: i),
+                  itemBuilder: (_, i) => AnimatedBuilder(
+                    animation: controller,
+                    builder: (context, child) {
+                      final value = controller.value;
+                      final bool showFront = value < 0.5;
+                      final angle = value * 3.14159;
+
+                      return Transform(
+                        transform: Matrix4.identity()
+                          ..setEntry(3, 2, 0.001) // 加上透視感 (Perspective)
+                          ..rotateY(angle),
+                        alignment: Alignment.center,
+                        child: Transform(
+                          transform: Matrix4.identity()..rotateY(showFront ? 0 : 3.14159),
+                          alignment: Alignment.center,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 10,
+                            ),
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              color: isFront ? Colors.cyan : Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: const [
+                                BoxShadow(color: Colors.black26, blurRadius: 8),
+                              ],
+                            ),
+                            child: isFront
+                                ? FrontView(monthIndex: i)
+                                : BackView(monthIndex: i),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
@@ -119,16 +162,21 @@ class _HomepageState extends State<Homepage> {
                       setState(() {
                         isFront = !isFront;
                       });
+                      if (isFront) {
+                        controller.forward();
+                      } else {
+                        controller.reverse();
+                      }
                     },
                     child: Container(
                       width: 50.0,
                       height: 50.0,
-                      decoration: const BoxDecoration(
-                        color: Colors.black87,
+                      decoration: BoxDecoration(
+                        color: isFront ? Colors.black87 : Colors.cyan,
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(
-                        Icons.calendar_month_rounded,
+                      child: Icon(
+                        isFront ? Icons.calendar_month_rounded : Icons.undo_rounded,
                         color: Colors.white,
                       ),
                     ),
