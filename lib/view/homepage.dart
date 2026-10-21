@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_diary/view/rive_view.dart';
 import 'package:flutter_diary/widget/back_view.dart';
 import 'package:flutter_diary/widget/front_view.dart';
 
@@ -147,14 +148,21 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                     ),
                   ),
                   const Spacer(),
-                  Container(
-                    width: 50.0,
-                    height: 50.0,
-                    decoration: const BoxDecoration(
-                      color: Colors.black87,
-                      shape: BoxShape.circle,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(
+                        context,
+                      ).push(MaterialPageRoute(builder: (context) => const RiveView()));
+                    },
+                    child: Container(
+                      width: 50.0,
+                      height: 50.0,
+                      decoration: const BoxDecoration(
+                        color: Colors.black87,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.mode_edit_outlined, color: Colors.white),
                     ),
-                    child: const Icon(Icons.mode_edit_outlined, color: Colors.white),
                   ),
                   const SizedBox(width: 10),
                   GestureDetector(
