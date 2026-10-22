@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_diary/utils.dart';
 import 'package:rive/rive.dart';
 
 class RiveView extends StatefulWidget {
@@ -15,15 +16,6 @@ class _RiveViewState extends State<RiveView> {
   late SMITrigger check;
   late SMITrigger error;
   late SMITrigger reset;
-
-  StateMachineController getRiveController(Artboard artboard) {
-    StateMachineController? controller = StateMachineController.fromArtboard(
-      artboard,
-      "State Machine 1",
-    );
-    artboard.addController(controller!);
-    return controller;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +65,9 @@ class _RiveViewState extends State<RiveView> {
                       child: RiveAnimation.asset(
                         'assets/checkerror.riv',
                         onInit: (artboard) {
-                          StateMachineController controller = getRiveController(artboard);
+                          StateMachineController controller = Utils.getRiveController(
+                            artboard,
+                          );
                           check = controller.findSMI("Check") as SMITrigger;
                           error = controller.findSMI("Error") as SMITrigger;
                           reset = controller.findSMI("Reset") as SMITrigger;

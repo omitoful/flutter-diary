@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_diary/view/entry_page.dart';
 import 'package:flutter_diary/view/rive_view.dart';
 import 'package:flutter_diary/widget/back_view.dart';
 import 'package:flutter_diary/widget/front_view.dart';
@@ -41,7 +42,11 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(
+                        context,
+                      ).push(MaterialPageRoute(builder: (context) => const EntryPage()));
+                    },
                     icon: const Icon(Icons.search_rounded),
                     iconSize: 30,
                   ),
