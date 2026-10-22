@@ -66,3 +66,30 @@ List<RiveAsset> bottomNavs = [
     title: "User",
   ),
 ];
+
+List<RiveAsset> sideMenus = [
+  RiveAsset(
+    "assets/icons.riv",
+    artboard: "HOME",
+    stateMachineName: "HOME_interactivity",
+    title: "Home",
+  ),
+  RiveAsset(
+    "assets/icons.riv",
+    artboard: "SEARCH",
+    stateMachineName: "SEARCH_Interactivity",
+    title: "Search",
+  ),
+  RiveAsset(
+    "assets/icons.riv",
+    artboard: "LIKE/STAR",
+    stateMachineName: "STAR_Interactivity",
+    title: "Favorite",
+  ),
+  RiveAsset(
+    "assets/icons.riv",
+    artboard: "CHAT",
+    stateMachineName: "CHAT_Interactivity",
+    title: "Help",
+  ),
+];

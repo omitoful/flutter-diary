@@ -3,6 +3,7 @@ import 'package:flutter_diary/view/entry_page.dart';
 import 'package:flutter_diary/view/rive_view.dart';
 import 'package:flutter_diary/widget/back_view.dart';
 import 'package:flutter_diary/widget/front_view.dart';
+import 'package:flutter_diary/widget/side_menu.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -33,6 +34,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const Drawer(child: SideMenu()),
       body: SafeArea(
         child: Column(
           children: [
@@ -51,10 +53,14 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                     iconSize: 30,
                   ),
 
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.short_text_rounded),
-                    iconSize: 30,
+                  Builder(
+                    builder: (context) => IconButton(
+                      onPressed: () {
+                        Scaffold.of(context).openDrawer();
+                      },
+                      icon: const Icon(Icons.short_text_rounded),
+                      iconSize: 30,
+                    ),
                   ),
                 ],
               ),
